@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-
+from fastapi import Depends
+from app.security import verify_internal_token
 from app.services.delete_vectors import delete_project_vectors
 
 
@@ -27,7 +28,10 @@ class DeleteResponse(BaseModel):
     response_model=DeleteResponse,
     tags=["Projects"],
 )
-def delete_project(req: DeleteRequest):
+def delete_project(
+    req: DeleteRequest,
+    _: None = Depends(verify_internal_token)
+):
     """
     Delete all vectors associated with a project_id.
     """

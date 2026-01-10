@@ -5,7 +5,8 @@ from app.services.crawl import crawl_site
 from app.services.chunk import chunk_text
 from app.services.embed_and_upsert import upsert_chunks
 import app.config as config
-
+from fastapi import Depends
+from app.security import verify_internal_token
 
 router = APIRouter()
 
@@ -42,7 +43,10 @@ class IngestResponse(BaseModel):
     response_model=IngestResponse,
     tags=["Projects"],
 )
-def ingest_project(req: IngestRequest):
+def ingest_project(
+    req: IngestRequest,
+    _: None = Depends(verify_internal_token)
+):
     """
     Crawl a website, chunk content, embed, and store in vector DB.
     """

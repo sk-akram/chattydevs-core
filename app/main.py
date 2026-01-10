@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import app.config as config
 from app.api.ingest import router as ingest_router
 from app.api.delete import router as delete_router
+from app.api.upload import router as upload_router
 
 # ==================================================
 # App initialization
@@ -43,6 +44,11 @@ app.include_router(
     delete_router,
     prefix="/projects",
     tags=["Deletion"],
+)
+app.include_router(
+    upload_router, 
+    prefix="/projects", 
+    tags=["Upload"]
 )
 
 # ==================================================
